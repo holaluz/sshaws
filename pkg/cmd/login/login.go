@@ -101,9 +101,12 @@ func convertNameToDNS(name string) string {
 	}
 	replaceBastion := strings.ReplaceAll(name, "bastion-", "bastion.")
 	replaceBastionV2 := strings.ReplaceAll(replaceBastion, "v2-", "")
-	replaceProd := strings.ReplaceAll(replaceBastionV2, "-prod", ".prod")
+	replaceProd := strings.ReplaceAll(replaceBastionV2, "-prod", "")
 	replaceStaging := strings.ReplaceAll(replaceProd, "-staging", ".staging")
 	dnsSplit := strings.Split(replaceStaging, ".")
-	dns := dnsSplit[1] + "." + dnsSplit[0] + "." + dnsSplit[2] + "." + subdomain
-	return dns
+	if strings.Contains(name, "staging") {
+		return dnsSplit[1] + "." + dnsSplit[0] + "." + dnsSplit[2] + "." + subdomain
+	}
+
+	return dnsSplit[1] + "." + dnsSplit[0] + "." + subdomain
 }
