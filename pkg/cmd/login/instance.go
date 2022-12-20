@@ -1,8 +1,10 @@
 package login
 
-import "time"
+import (
+	"time"
+)
 
-//Instance struct
+// Instance struct
 type Instance struct {
 	Name       string
 	IP         string
@@ -12,7 +14,7 @@ type Instance struct {
 	LaunchTime time.Time
 }
 
-//NewInstance initialize struct Instnace.
+// NewInstance initialize struct Instance.
 func NewInstance(name, ip, id, size, az string, launchTime time.Time) *Instance {
 	newInstance := new(Instance)
 	newInstance.Name = name
