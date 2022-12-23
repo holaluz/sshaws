@@ -6,14 +6,27 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/olekukonko/tablewriter"
 )
 
 const subdomain string = "clidom.es"
 
 // NewLogin login to the selected instance.
-func NewLogin(name string, region string, user string, silent bool, ssh bool, pushKey bool) {
-	rawInstanceList := filterInstances(region, name, silent, ssh)
+func NewLogin(name, region, user, profile string, silent, ssh, pushKey bool) {
+
+	client, err := session.NewSessionWithOptions(session.Options{
+		SharedConfigState: session.SharedConfigEnable,
+		Profile:           profile,
+		Config:            aws.Config{Region: aws.String(region)},
+	})
+	if err != nil {
+		fmt.Println("error:", err)
+		os.Exit(1)
+	}
+
+	rawInstanceList := filterInstances(region, name, silent, client)
 	instances := getInstancesInfo(rawInstanceList)
 
 	if silent {
@@ -29,7 +42,7 @@ func NewLogin(name string, region string, user string, silent bool, ssh bool, pu
 	} else if pushKey {
 		pushTempKeyPair(instances[selectedInstance].ID, instances[selectedInstance].AZ, instances[selectedInstance].IP, user)
 	} else {
-		launchSSM(instances[selectedInstance].ID)
+		launchSSM(instances[selectedInstance].ID, profile)
 	}
 }
 

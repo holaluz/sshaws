@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	cmd "github.com/uritau/sshaws/pkg/cmd"
-	auth "github.com/uritau/sshaws/pkg/cmd/login"
+	cmd "github.com/holaluz/sshaws/pkg/cmd"
+	auth "github.com/holaluz/sshaws/pkg/cmd/login"
 )
 
 func main() {
@@ -17,25 +17,29 @@ func main() {
 		username       string
 		silent         bool
 		ssh            bool
-		pushKey		   bool
+		pushKey        bool
+		profile        string
 	)
 
 	const (
-		defaultName   	= "*"
-		usageName     	= "Instance Name"
-		defaultRegion 	= "eu-west-1"
-		usageRegion   	= "AWS Region"
-		defaultUser   	= "ubuntu"
-		usageUser     	= "SSH login name"
-		defaultSilent 	= false
-		usageSilent   	= "Show only IP"
-		defaultSSH    	= false
-		usageSSH      	= "Use SSH instead of SSM"
-		defaultPushKey 	= false
-		usagePushKey	= "Push temporal public key to instance"
+		defaultName    = "*"
+		usageName      = "Instance Name"
+		defaultRegion  = "eu-west-1"
+		usageRegion    = "AWS Region"
+		defaultUser    = "ubuntu"
+		usageUser      = "SSH login name"
+		defaultSilent  = false
+		usageSilent    = "Show only IP"
+		defaultSSH     = false
+		usageSSH       = "Use SSH instead of SSM"
+		defaultPushKey = false
+		usagePushKey   = "Push temporal public key to instance"
+		defaultProfile = "main"
+		usageProfile   = "Which okta profile to use "
 	)
 
 	flag.StringVar(&name, "name", defaultName, usageName)
+	flag.StringVar(&profile, "profile", defaultProfile, usageProfile)
 	flag.BoolVar(&silent, "silent", defaultSilent, usageSilent)
 	flag.BoolVar(&ssh, "ssh", defaultSSH, usageSSH+" [short mode]")
 	flag.BoolVar(&pushKey, "k", defaultPushKey, usagePushKey+" [short mode]")
@@ -55,5 +59,5 @@ func main() {
 		name = flag.Args()[0]
 	}
 
-	auth.NewLogin(name, region, username, silent, ssh, pushKey)
+	auth.NewLogin(name, region, username, profile, silent, ssh, pushKey)
 }

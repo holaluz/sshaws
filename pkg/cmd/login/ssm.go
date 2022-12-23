@@ -6,13 +6,14 @@ import (
 	"time"
 )
 
-func launchSSM(destInstance string) {
+func launchSSM(destInstance, profile string) {
 	destination := destInstance
 	pa := os.ProcAttr{
 		Files: []*os.File{os.Stdin, os.Stdout, os.Stderr},
 	}
 	time.Sleep(1 * time.Second)
 	awscliPath := getCommandPath("aws")
+	os.Setenv("AWS_PROFILE", profile)
 
 	fmt.Printf(">> Starting a new ssm session to %s\n", destination)
 	ignoreInterruptionSignal()
@@ -28,5 +29,3 @@ func launchSSM(destInstance string) {
 
 	fmt.Printf("<< Exited ssm session: %s\n", state.String())
 }
-
-

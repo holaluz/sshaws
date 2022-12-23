@@ -9,15 +9,13 @@ import (
 	"github.com/aws/aws-sdk-go/service/ec2"
 )
 
-func filterInstances(region, name string, silent bool, ssh bool) *ec2.DescribeInstancesOutput {
+func filterInstances(region, name string, silent bool, client *session.Session) *ec2.DescribeInstancesOutput {
 	if !silent {
 		fmt.Printf("\nName: %s   Region: %s\n", name, region)
 		fmt.Printf("---------------------------------------------------------\n\n")
 	}
-	sess, err := session.NewSession(&aws.Config{
-		Region: aws.String(region)},
-	)
-	ec2svc := ec2.New(sess)
+	ec2svc := ec2.New(client)
+
 	params := &ec2.DescribeInstancesInput{
 		Filters: []*ec2.Filter{
 			{
@@ -30,6 +28,7 @@ func filterInstances(region, name string, silent bool, ssh bool) *ec2.DescribeIn
 			},
 		},
 	}
+
 	resp, err := ec2svc.DescribeInstances(params)
 	if err != nil {
 		fmt.Println("there was an error listing instances in", err.Error())
