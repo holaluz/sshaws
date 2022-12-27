@@ -15,12 +15,13 @@ const subdomain string = "clidom.es"
 
 // NewLogin login to the selected instance.
 func NewLogin(name, region, user, profile string, silent, ssh, pushKey bool) {
-
-	client, err := session.NewSessionWithOptions(session.Options{
-		SharedConfigState: session.SharedConfigEnable,
-		Profile:           profile,
-		Config:            aws.Config{Region: aws.String(region)},
-	})
+	if _, isSet := os.LookupEnv("AWS_PROFILE"); !isSet {
+		os.Setenv("AWS_PROFILE", profile)
+	}
+	os.Setenv("AWS_SDK_LOAD_CONFIG", "true")
+	client, err := session.NewSession(&aws.Config{
+		Region: aws.String(region)},
+	)
 	if err != nil {
 		fmt.Println("error:", err)
 		os.Exit(1)
