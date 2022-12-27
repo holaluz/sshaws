@@ -13,7 +13,6 @@ func launchSSM(destInstance, profile string) {
 	}
 	time.Sleep(1 * time.Second)
 	awscliPath := getCommandPath("aws")
-	os.Setenv("AWS_PROFILE", profile)
 
 	fmt.Printf(">> Starting a new ssm session to %s\n", destination)
 	ignoreInterruptionSignal()

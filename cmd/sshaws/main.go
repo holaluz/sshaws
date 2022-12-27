@@ -34,7 +34,7 @@ func main() {
 		usageSSH       = "Use SSH instead of SSM"
 		defaultPushKey = false
 		usagePushKey   = "Push temporal public key to instance"
-		defaultProfile = "main"
+		defaultProfile = "default"
 		usageProfile   = "Which okta profile to use "
 	)
 
