@@ -135,7 +135,7 @@ Currently the CI build on github generates the binary files for Linux, OSX and W
 
 ```bash
 # Download latest version from https://github.com/holaluz/sshaws/releases/latest
-sudo wget -O /usr/local/bin/sshaws https://github.com/holaluz/sshaws/releases/latest/download/sshaws && sudo chmod +x /usr/local/bin/sshaws
+sudo wget -O /usr/local/bin/sshaws https://github.com/holaluz/sshaws/releases/latest/download/sshaws
 
 # Give it execution permissions
 sudo chmod +x /usr/local/bin/sshaws
